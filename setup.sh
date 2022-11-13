@@ -25,9 +25,7 @@ systemctl enable --now cockpit
 sleep 5
 systemctl status cockpit
 
-# Step 3: Caddy Reverse proxy
-ufw enable
-ufw allow 22/tcp 443/tcp 80/tcp 9090/tcp
+# Step 3: Install Caddy
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
 apt update
@@ -35,6 +33,8 @@ apt install -y caddy
 systemctl enable --now caddy
 
 # Step4: Configure caddy
+ufw enable
+ufw allow 22/tcp 443/tcp 80/tcp 9090/tcp
 echo "EXTERNAL_SITE_ADDRESS=$EXTERNAL_SITE_ADDRESS" >> /etc/environment
 cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bkp
 cp ./Caddyfile /etc/caddy/
