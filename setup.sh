@@ -47,7 +47,7 @@ systemctl status --no-pager caddy
 echo "Step 5: Configure DDNS using cronjob" && sleep 3
 if [[ ! -z "$DDNS_PASSWORD" ]]; then
   EXTERNAL_SUBDOMAIN=$(echo $EXTERNAL_SITE_ADDRESS | cut -d '.' -f 1)
-  EXTERNAL_DOMAIN=${"$EXTERNAL_SITE_ADDRESS"/"$EXTERNAL_SUBDOMAIN."/""}
+  EXTERNAL_DOMAIN=${EXTERNAL_SITE_ADDRESS/"$EXTERNAL_SUBDOMAIN."/""}
   cp ./ddns.sh /root/
   (crontab -l 2>/dev/null; echo "15 */4 * * * /root/ddns.sh $EXTERNAL_SUBDOMAIN $EXTERNAL_DOMAIN $DDNS_PASSWORD >> /root/ddns.log") | crontab -
 else 
