@@ -49,7 +49,7 @@ if [[ ! -z "$DDNS_PASSWORD" ]]; then
   EXTERNAL_SUBDOMAIN=$(echo $EXTERNAL_SITE_ADDRESS | cut -d '.' -f 1)
   EXTERNAL_DOMAIN=${EXTERNAL_SITE_ADDRESS/"$EXTERNAL_SUBDOMAIN."/""}
   cp ./ddns.sh /root/
-  (crontab -l 2>/dev/null; echo "15 */4 * * * /root/ddns.sh $EXTERNAL_SUBDOMAIN $EXTERNAL_DOMAIN $DDNS_PASSWORD >> /root/ddns.log") | crontab -
+  (crontab -l 2>/dev/null; echo "15 */4 * * * /root/ddns.sh $EXTERNAL_SUBDOMAIN $EXTERNAL_DOMAIN $DDNS_PASSWORD >> /root/ddns.log") | sudo crontab -
 else 
   echo "No DDNS_PASSWORD, skipping..."
 fi
