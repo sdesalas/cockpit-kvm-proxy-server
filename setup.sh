@@ -33,7 +33,7 @@ apt install -y caddy
 systemctl enable --now caddy
 
 export CADDY_SITE_ADDRESS=hpserver1.crafty.monster
-printf "\nCADDY_SITE_ADDRESS=$CADDY_SITE_ADDRESS" >> /etc/environment
+echo "CADDY_SITE_ADDRESS=$CADDY_SITE_ADDRESS" >> /etc/environment
 cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bkp
 cp ./Caddyfile /etc/caddy/
 systemctl restart caddy
