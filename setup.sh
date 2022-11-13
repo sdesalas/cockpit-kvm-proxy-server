@@ -2,7 +2,7 @@
 # Please run as `root` user 
 # $ sudo setup.sh
 
-EXTERNAL_SITE_ADDRESS=hpserver1.crafty.monster
+EXTERNAL_SITE_ADDRESS=cloud.somedomain.com
 DDNS_PASSWORD=7b2af01dca8bed
 
 echo "Step 0: Install common tools" && sleep 3
