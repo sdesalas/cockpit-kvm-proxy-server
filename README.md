@@ -5,3 +5,5 @@ Setup Cockpit + KVM + Caddy reverse proxy in a fresh install of Ubuntu 20.04 or 
 ```
 $ sudo ./setup.sh
 ```
+
+Includes DDNS for pointing your domain name.
