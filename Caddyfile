@@ -1,8 +1,7 @@
 # Refer to the Caddy docs for more information:
 # https://caddyserver.com/docs/caddyfile
 
-{$EXTERNAL_SITE_ADDRESS} {
+$EXTERNAL_SITE_ADDRESS {
 	# Set to run as reverse proxy:
 	reverse_proxy localhost:9090
 }
-
