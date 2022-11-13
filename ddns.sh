@@ -1,5 +1,5 @@
 #!/bin/sh
-# Roll your own DDNS
+# Roll your own Namecheap DDNS
 # Shell script to update namecheap.com dynamic dns
 # for a domain to your external IP address
 #
