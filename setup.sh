@@ -6,7 +6,7 @@ export EXTERNAL_SITE_ADDRESS=hpserver1.crafty.monster
 # $ sudo setup.sh
 
 apt update
-apt install -y git htop gettext-base debian-keyring debian-archive-keyring apt-transport-https 
+apt install -y git curl htop gettext-base debian-keyring debian-archive-keyring apt-transport-https 
 
 # Step 1: Setup KVM
 # @see https://www.tecmint.com/install-kvm-on-ubuntu/
