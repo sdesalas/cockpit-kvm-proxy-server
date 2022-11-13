@@ -6,7 +6,7 @@ export DDNS_PASSWORD=7b2af01dca8bed
 # Please run as `root` user 
 # $ sudo setup.sh
 
-echo "Step 0: Install commont tools" && sleep 3
+echo "Step 0: Install common tools" && sleep 3
 apt update
 apt install -y git curl htop gettext-base apt-transport-https 
 
@@ -30,7 +30,7 @@ systemctl status --no-pager cockpit
 
 echo "Step 3: Install Caddy" && sleep 3
 apt install -y debian-keyring debian-archive-keyring
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor --always-trust -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor --always-trust -y -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
 apt update
 apt install -y caddy
