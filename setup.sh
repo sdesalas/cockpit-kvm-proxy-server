@@ -6,7 +6,7 @@ export EXTERNAL_SITE_ADDRESS=hpserver1.crafty.monster
 # $ sudo setup.sh
 
 apt update
-apt install -y git htop debian-keyring debian-archive-keyring apt-transport-https
+apt install -y git htop gettext-base debian-keyring debian-archive-keyring apt-transport-https 
 
 # Step 1: Setup KVM
 # @see https://www.tecmint.com/install-kvm-on-ubuntu/
@@ -20,9 +20,10 @@ lsmod | grep -i kvm
 
 # Step 2: Cockpit + virtual machines addon
 apt install cockpit cockpit-machines
-systemctl start cockpit
-systemctl enable --now cockpit
+envsubst < ./cockpit.conf > /etc/cockpit/cockpit.conf
+systemctl restart cockpit
 sleep 5
+systemctl enable --now cockpit
 systemctl status cockpit
 
 # Step 3: Install Caddy
