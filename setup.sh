@@ -38,7 +38,7 @@ systemctl enable --now caddy
 
 echo "Step 4: Configure caddy" && sleep 3
 ufw enable
-ufw allow 22,443,80 proto tcp
+ufw allow 22,443,80/tcp
 echo "EXTERNAL_SITE_ADDRESS=$EXTERNAL_SITE_ADDRESS" >> /etc/environment
 cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bkp
 cp ./Caddyfile /etc/caddy/
