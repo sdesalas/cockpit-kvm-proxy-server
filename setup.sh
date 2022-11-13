@@ -16,7 +16,7 @@ apt install -y cpu-checker
 kvm-ok
 apt install -y qemu qemu-kvm libvirt-daemon libvirt-clients bridge-utils virt-manager
 sleep 5
-systemctl show libvirtd
+systemctl status --no-pager libvirtd
 systemctl enable --now libvirtd
 lsmod | grep -i kvm
 
@@ -26,7 +26,7 @@ envsubst < ./cockpit.conf > /etc/cockpit/cockpit.conf
 systemctl restart cockpit
 sleep 5
 systemctl enable --now cockpit
-systemctl show cockpit
+systemctl status --no-pager cockpit
 
 echo "Step 3: Install Caddy" && sleep 3
 apt install -y debian-keyring debian-archive-keyring
@@ -38,13 +38,13 @@ systemctl enable --now caddy
 
 echo "Step 4: Configure caddy" && sleep 3
 ufw enable
-ufw allow 22/tcp 443/tcp 80/tcp 9090/tcp
+ufw allow 22,443,80 proto tcp
 echo "EXTERNAL_SITE_ADDRESS=$EXTERNAL_SITE_ADDRESS" >> /etc/environment
 cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bkp
 cp ./Caddyfile /etc/caddy/
 systemctl restart caddy
 sleep 5
-systemctl show caddy
+systemctl status --no-pager caddy
 
 echo "Step 5: Configure DDNS using cronjob" && sleep 3
 if [[ ! -z "$DDNS_PASSWORD" ]]; then
