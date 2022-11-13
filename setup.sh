@@ -6,10 +6,11 @@ export DDNS_PASSWORD=7b2af01dca8bed
 # Please run as `root` user 
 # $ sudo setup.sh
 
+echo "Step 0: Install commont tools" && sleep 3
 apt update
-apt install -y git curl htop gettext-base debian-keyring debian-archive-keyring apt-transport-https 
+apt install -y git curl htop gettext-base apt-transport-https 
 
-# Step 1: Setup KVM
+echo "Step 1: Setup KVM" && sleep 3
 # @see https://www.tecmint.com/install-kvm-on-ubuntu/
 apt install -y cpu-checker
 kvm-ok
@@ -19,22 +20,23 @@ systemctl status libvirtd
 systemctl enable --now libvirtd
 lsmod | grep -i kvm
 
-# Step 2: Cockpit + virtual machines addon
-apt install cockpit cockpit-machines
+echo "Step 2: Cockpit + virtual machines addon"  && sleep 3
+apt install -y cockpit cockpit-machines
 envsubst < ./cockpit.conf > /etc/cockpit/cockpit.conf
 systemctl restart cockpit
 sleep 5
 systemctl enable --now cockpit
 systemctl status cockpit
 
-# Step 3: Install Caddy
+echo "Step 3: Install Caddy" && sleep 3
+apt install -y debian-keyring debian-archive-keyring
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
 apt update
 apt install -y caddy
 systemctl enable --now caddy
 
-# Step 4: Configure caddy
+echo "Step 4: Configure caddy" && sleep 3
 ufw enable
 ufw allow 22/tcp 443/tcp 80/tcp 9090/tcp
 echo "EXTERNAL_SITE_ADDRESS=$EXTERNAL_SITE_ADDRESS" >> /etc/environment
@@ -44,10 +46,12 @@ systemctl restart caddy
 sleep 5
 systemctl status caddy
 
-# Step 5: Configure DDNS using cronjob
+echo "Step 5: Configure DDNS using cronjob" && sleep 3
 if [[ ! -z "$DDNS_PASSWORD" ]]; then
   EXTERNAL_SUBDOMAIN=$(echo $EXTERNAL_SITE_ADDRESS | cut -d '.' -f 1)
   EXTERNAL_DOMAIN=${"$EXTERNAL_SITE_ADDRESS"/"$EXTERNAL_SUBDOMAIN."/""}
   cp ./ddns.sh /root/
   (crontab -l 2>/dev/null; echo "15 */4 * * * /root/ddns.sh $EXTERNAL_SUBDOMAIN $EXTERNAL_DOMAIN $DDNS_PASSWORD >> /root/ddns.log") | crontab -
+else 
+  echo "No DDNS_PASSWORD, skipping..."
 fi
