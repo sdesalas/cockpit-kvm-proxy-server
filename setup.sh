@@ -1,5 +1,7 @@
 #! /bin/bash -ex
 
+export EXTERNAL_SITE_ADDRESS=hpserver1.crafty.monster
+
 # Please run as `root` user 
 # $ sudo setup.sh
 
@@ -32,8 +34,8 @@ apt update
 apt install -y caddy
 systemctl enable --now caddy
 
-export CADDY_SITE_ADDRESS=hpserver1.crafty.monster
-echo "CADDY_SITE_ADDRESS=$CADDY_SITE_ADDRESS" >> /etc/environment
+# Step4: Configure caddy
+echo "EXTERNAL_SITE_ADDRESS=$EXTERNAL_SITE_ADDRESS" >> /etc/environment
 cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bkp
 cp ./Caddyfile /etc/caddy/
 systemctl restart caddy
