@@ -16,7 +16,11 @@ systemctl enable --now libvirtd
 lsmod | grep -i kvm
 
 # Step 2: Cockpit + virtual machines addon
-
+apt install cockpit cockpit-machines
+systemctl start cockpit
 
 # Step 3: Caddy Reverse proxy
+sudo ufw enable
+sudo ufw allow 22/tcp 443/tcp 80/tcp 9090/tcp
+
 
