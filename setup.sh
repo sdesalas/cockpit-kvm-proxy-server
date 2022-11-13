@@ -1,10 +1,9 @@
 #! /bin/bash -ex
-
-export EXTERNAL_SITE_ADDRESS=hpserver1.crafty.monster
-export DDNS_PASSWORD=7b2af01dca8bed
-
 # Please run as `root` user 
 # $ sudo setup.sh
+
+EXTERNAL_SITE_ADDRESS=hpserver1.crafty.monster
+DDNS_PASSWORD=7b2af01dca8bed
 
 echo "Step 0: Install common tools" && sleep 3
 apt update
@@ -39,9 +38,8 @@ systemctl enable --now caddy
 echo "Step 4: Configure caddy" && sleep 3
 ufw enable
 ufw allow 22,443,80/tcp
-echo "EXTERNAL_SITE_ADDRESS=$EXTERNAL_SITE_ADDRESS" >> /etc/environment
 cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bkp
-cp ./Caddyfile /etc/caddy/
+envsubst < ./Caddyfile > /etc/caddy/Caddyfile
 systemctl restart caddy
 sleep 5
 systemctl status --no-pager caddy
