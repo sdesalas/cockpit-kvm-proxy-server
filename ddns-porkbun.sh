@@ -36,6 +36,10 @@ dirx="$($DIRNAME -- $($READLINK -fn -- "$0"; $ECHO x))";
 DIR="${dirx%x}";
 cd $DIR
 
+# Get time
+D="$(TZ=Europe/Paris $DATE)";
+$ECHO "$0 Started on $D from $DIR" | $TEE $LOGFILE;
+
 # Get current public IP - thanks api.ipify.org!
 CURRENT_IP=$($CURL -s https://api.ipify.org);
 

@@ -12,7 +12,7 @@ apt update
 apt install -y git curl htop nano gettext-base apt-transport-https 
 
 echo "Step 1: Setup KVM" && sleep 3
-#@see https://www.tecmint.com/install-kvm-on-ubuntu/
+# @see https://www.tecmint.com/install-kvm-on-ubuntu/
 apt install -y cpu-checker
 kvm-ok
 apt install -y qemu qemu-kvm libvirt-daemon libvirt-clients bridge-utils virt-manager
