@@ -3,14 +3,16 @@
 # $ sudo setup.sh
 
 EXTERNAL_SITE_ADDRESS=cloud.somedomain.com
-DDNS_PASSWORD=7b2af01dca8bed
+NAMECHEAP_PASSWORD=
+PORKBUN_PUBLICKEY=publickey
+PORKBUN_PRIVATEKEY=privatekey
 
 echo "Step 0: Install common tools" && sleep 3
 apt update
 apt install -y git curl htop nano gettext-base apt-transport-https 
 
 echo "Step 1: Setup KVM" && sleep 3
-# @see https://www.tecmint.com/install-kvm-on-ubuntu/
+#@see https://www.tecmint.com/install-kvm-on-ubuntu/
 apt install -y cpu-checker
 kvm-ok
 apt install -y qemu qemu-kvm libvirt-daemon libvirt-clients bridge-utils virt-manager
@@ -44,13 +46,24 @@ systemctl restart caddy
 sleep 5
 systemctl status --no-pager caddy
 
-echo "Step 5: Configure DDNS using cronjob" && sleep 3
-if [[ ! -z "$DDNS_PASSWORD" ]]; then
-  EXTERNAL_SUBDOMAIN=$(echo $EXTERNAL_SITE_ADDRESS | cut -d '.' -f 1)
-  EXTERNAL_DOMAIN=${EXTERNAL_SITE_ADDRESS/"$EXTERNAL_SUBDOMAIN."/""}
-  cp ./ddns.sh /root/
-  chmod +x /root/ddns.sh
-  (crontab -l 2>/dev/null; echo "15 */4 * * * /root/ddns.sh $EXTERNAL_SUBDOMAIN $EXTERNAL_DOMAIN $DDNS_PASSWORD >> /root/ddns.log") | sudo crontab -
+if [[ ! -z "$NAMECHEAP_PASSWORD" ]]; then
+ echo "Step 5: Configure DDNS using namecheap / cronjob" && sleep 3
+ EXTERNAL_SUBDOMAIN=$(echo $EXTERNAL_SITE_ADDRESS | cut -d '.' -f 1)
+ EXTERNAL_DOMAIN=${EXTERNAL_SITE_ADDRESS/"$EXTERNAL_SUBDOMAIN."/""}
+ cp ./ddns-namecheap.sh /root/ddns.sh
+ chmod +x /root/ddns.sh
+ (crontab -l 2>/dev/null; echo "15 */4 * * * /root/ddns.sh $EXTERNAL_SUBDOMAIN $EXTERNAL_DOMAIN $NAMECHEAP_PASSWORD >> /root/ddns.log") | sudo crontab -
 else 
-  echo "No DDNS_PASSWORD, skipping..."
+ echo "No NAMECHEAP_PASSWORD, skipping namecheap..."
+fi
+
+if [[ ! -z "$PORKBUN_PRIVATEKEY" ]]; then
+ echo "Step 5: Configure DDNS using porkbun / cronjob" && sleep 3
+ EXTERNAL_SUBDOMAIN=$(echo $EXTERNAL_SITE_ADDRESS | cut -d '.' -f 1)
+ EXTERNAL_DOMAIN=${EXTERNAL_SITE_ADDRESS/"$EXTERNAL_SUBDOMAIN."/""}
+ cp ./ddns-porkbun.sh /root/ddns.sh
+ chmod +x /root/ddns.sh
+ (crontab -l 2>/dev/null; echo "15 */4 * * * /root/ddns.sh $EXTERNAL_SUBDOMAIN $EXTERNAL_DOMAIN $PORKBUN_PUBLICKEY $PORKBUN_PRIVATEKEY >> /root/ddns.log") | sudo crontab -
+else 
+ echo "No PORKBUN_PRIVATEKEY, skipping porkbun..."
 fi
